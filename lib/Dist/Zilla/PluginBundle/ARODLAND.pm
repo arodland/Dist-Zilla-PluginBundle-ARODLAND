@@ -1,13 +1,16 @@
 package Dist::Zilla::PluginBundle::ARODLAND;
+# ABSTRACT: Use L<Dist::Zilla> like ARODLAND does
+
 use 5.10.0;
 use Moose;
-with 'Dist::Zilla::PluginBundle';
+with 'Dist::Zilla::Role::PluginBundle';
 
 use Dist::Zilla::PluginBundle::Basic;
 use Dist::Zilla::PluginBundle::Git;
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::MetaNoIndex;
 use Dist::Zilla::Plugin::AutoVersion;
+use Dist::Zilla::Plugin::Git::NextVersion;
 
 sub bundle_config {
   my ($self, $section) = @_;
@@ -23,7 +26,7 @@ sub bundle_config {
   my $repository_url = $config->{repository_url};
   my $repository_web = $config->{repository_web};
 
-  my $no_a_pre = $config->{no_Autoprereq} // 0;
+  my $no_a_pre = $config->{no_AutoPrereqs} // 0;
   my $nextrelease_format = $config->{nextrelease_format} // "Version %v: %{yyyy-MM-dd}d";
 
   my $nextversion = $config->{nextversion} // "git"; # git, autoversion, manual
@@ -61,7 +64,7 @@ sub bundle_config {
     when (not defined) {
       $webpage = "http://metacpan.org/release/$dist";
     } default {
-      $page = $homepage;
+      $webpage = $homepage;
     }
   }
 
@@ -87,7 +90,7 @@ sub bundle_config {
     ],
     [
       MetaResources => {
-        homepage => $page,
+        homepage => $webpage,
         'bugtracker.web' => $tracker,
         'bugtracker.mailto' => $tracker_mailto,
         'repository.type' => 'git',
@@ -118,7 +121,7 @@ sub bundle_config {
           first_version => '0.01',
           ( $version_regexp
             ? (version_regexp => $version_regexp)
-            : (version_regexp => '^(\d.*)$')
+            : (version_regexp => '^v(\d.*)$')
           ),
         }
       ];
@@ -131,8 +134,10 @@ sub bundle_config {
           ),
         }
       ];
-    } default {
+    } when ('manual') {
       # Manual versioning
+    } default {
+      die "Unknown 'nextversion'\n";
     }
   };
 
@@ -150,3 +155,66 @@ sub bundle_config {
   return @plugins;
 }
 
+__PACKAGE__->meta->make_immutable;
+
+=head1 DESCRIPTION
+
+This is the plugin bundle that ARODLAND uses. Use it as:
+
+    [@ARODLAND]
+
+    ;; Same as 'name' earlier in the dist.ini
+    dist = My-Dist
+    ;; If you're not me
+    github_user = joebloe
+    ;; Bugtracker: github or rt (or URL)
+    bugtracker = rt
+    ;; custom homepage / repository
+    homepage = http://www.myawesomeproject.com/
+    repository = http://git.myawesomeproject.com/coolstuff.git
+    ;; disable certain features so you can do it better on your own
+    no_AutoPrereqs = 1
+    ;; cpan:ARODLAND is the default AUTHORITY
+    authority = cpan:ARODLAND
+
+It's equvalent to
+
+    [@Basic]
+    
+    [AutoPrereqs] ;; Unless no_AutoPrereqs is set
+    [PkgVersion]
+    [MetaJSON]
+    
+    [MetaNoIndex]
+    ;; Only added if these directories exist
+    directory = inc
+    directory = t
+    directory = xt
+    directory = utils
+    directory = example
+    directory = examples
+     
+    [MetaResources]
+    ;; $github_user is 'arodland' by default
+    homepage   = http://search.cpan.org/dist/$dist/
+    bugtracker.mailto = bug-$dist@rt.cpan.org
+    bugtracker.web = https://rt.cpan.org/Public/Dist/Display.html?Name=$dist
+    repository.web = http://github.com/$github_user/$dist
+    repository.url = git://github.com/$github_user/$dist.git
+    repository.type = git
+    license    = http://dev.perl.org/licenses/ 
+    
+    [Authority]
+    authority = cpan:ARODLAND
+    do_metadata = 1
+    
+    [NextRelease]
+    format = Version %v: %{yyyy-MM-dd}d
+
+    [Git::NextVersion] ;; if nextversion is set to 'git'
+    
+    [AutoVersion] ;; if nextversion is set to 'autoversion'
+
+    [@Git]
+    
+=cut
