@@ -11,6 +11,7 @@ use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::MetaNoIndex;
 use Dist::Zilla::Plugin::AutoVersion;
 use Dist::Zilla::Plugin::Git::NextVersion;
+use Dist::Zilla::Plugin::CheckChangesHasContent;
 
 sub bundle_config {
   my ($self, $section) = @_;
@@ -113,6 +114,7 @@ sub bundle_config {
         format => $nextrelease_format,
       }
     ],
+    [ CheckChangesHasContent => { } ],
   );
 
   given ($nextversion) {
@@ -217,6 +219,8 @@ It's equvalent to
     
     [NextRelease]
     format = Version %v: %{yyyy-MM-dd}d
+
+    [CheckChangesHasContent]
 
     [Git::NextVersion] ;; if nextversion is set to 'git'
     
