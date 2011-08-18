@@ -124,7 +124,7 @@ sub bundle_config {
           first_version => '0.01',
           ( $version_regexp
             ? (version_regexp => $version_regexp)
-            : (version_regexp => '^v(\d.*)$')
+            : (version_regexp => '^(\d.*)$')
           ),
         }
       ];
