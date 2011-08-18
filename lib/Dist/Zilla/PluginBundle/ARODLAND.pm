@@ -20,7 +20,7 @@ sub bundle_config {
   my $dist = $config->{dist} // die "You must supply a dist name\n";
   my $github_user = $config->{github_user} // "arodland";
 
-  my $authority = $config->{authority} // "cpan:ARODLAND";
+  my $authority = $config->{authority};
   my $bugtracker = $config->{bugtracker} // "rt";
   my $homepage = $config->{homepage};
   my $repository_url = $config->{repository_url};
@@ -101,7 +101,10 @@ sub bundle_config {
     ],
     [
       Authority => {
-        authority => $authority,
+        (defined $authority
+          ? (authority => $authority)
+          : ()
+        ),
         do_metadata => 1,
       }
     ],
@@ -178,7 +181,7 @@ This is the plugin bundle that ARODLAND uses. Use it as:
     repository = http://git.myawesomeproject.com/coolstuff.git
     ;; disable certain features so you can do it better on your own
     no_AutoPrereqs = 1
-    ;; cpan:ARODLAND is the default AUTHORITY
+    ;; defaults to the username from your [%PAUSE] or ~/.pause
     authority = cpan:ARODLAND
 
 It's equvalent to
@@ -209,7 +212,7 @@ It's equvalent to
     license    = http://dev.perl.org/licenses/ 
     
     [Authority]
-    authority = cpan:ARODLAND
+    authority = cpan:YOURNAME ; if provided
     do_metadata = 1
     
     [NextRelease]
