@@ -147,19 +147,14 @@ sub bundle_config {
           ? (tag_message => $tag_message)
           : ()
         ),
+        allow_dirty => 'dist.ini',
+        allow_dirty => 'README',
+        allow_dirty => 'Changes',
+        changelog => 'Changes',
+        commit_msg => 'Release v%v%n%n%c',
+        push_to => 'origin',
       },
   });
-
-  push @plugins, map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
-  (
-    [
-      'Git::Check' => {
-        allow_dirty => [qw/dist.ini README/],
-        changelog => 'Changes',
-      }
-    ]
-  );
-
 
   return @plugins;
 }
@@ -225,10 +220,11 @@ It's equvalent to
     [AutoVersion] ;; if nextversion is set to 'autoversion'
 
     [@Git]
-    
-    [Git::Check]
     allow_dirty = dist.ini
     allow_dirty = README
+    allow_dirty = Changes
     changelog = Changes
-    
+    commit_msg = Release v%v%n%n%c
+    push_to = origin
+
 =cut
