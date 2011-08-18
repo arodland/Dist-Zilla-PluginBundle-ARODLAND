@@ -74,7 +74,7 @@ sub bundle_config {
   });
 
   my $prefix = 'Dist::Zilla::Plugin::';
-  my @extra = map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
+  push @plugins, map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
   (
     ($no_a_pre
       ? ()
@@ -111,8 +111,6 @@ sub bundle_config {
       }
     ],
   );
-
-  push @plugins, @extra;
 
   given ($nextversion) {
     when ('git') {
@@ -151,6 +149,17 @@ sub bundle_config {
         ),
       },
   });
+
+  push @plugins, map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
+  (
+    [
+      'Git::Check' => {
+        allow_dirty => [qw/dist.ini README/],
+        changelog => 'Changes',
+      }
+    ]
+  );
+
 
   return @plugins;
 }
