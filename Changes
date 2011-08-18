@@ -1,2 +1,8 @@
-{{NEXT}}
-  * Initial release
+{{$NEXT}}
+
+Version 0.02: 2011-08-18
+  * First intentional release, with correct git handling.
+
+Version 0.01: 2011-08-17
+  * Accidentally released an incomplete version to CPAN. Amusing, since
+    this is the module I'm using to manage my release process.
