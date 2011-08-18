@@ -226,4 +226,9 @@ It's equvalent to
 
     [@Git]
     
+    [Git::Check]
+    allow_dirty = dist.ini
+    allow_dirty = README
+    changelog = Changes
+    
 =cut
