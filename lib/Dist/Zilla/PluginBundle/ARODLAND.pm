@@ -1,5 +1,7 @@
 package Dist::Zilla::PluginBundle::ARODLAND;
 # ABSTRACT: Use L<Dist::Zilla> like ARODLAND does
+# AUTHORITY
+# VERSION
 
 use 5.10.0;
 use Moose;
@@ -12,6 +14,7 @@ use Dist::Zilla::Plugin::MetaNoIndex;
 use Dist::Zilla::Plugin::AutoVersion;
 use Dist::Zilla::Plugin::Git::NextVersion;
 use Dist::Zilla::Plugin::CheckChangesHasContent;
+use Dist::Zilla::Plugin::OurPkgVersion;
 
 sub bundle_config {
   my ($self, $section) = @_;
@@ -81,7 +84,7 @@ sub bundle_config {
       ? ()
       : ([ AutoPrereqs => { } ])
     ),
-    [ PkgVersion => { } ],
+    [ OurPkgVersion => { } ],
     [ MetaJSON => { } ],
     [
       MetaNoIndex => {
@@ -107,6 +110,8 @@ sub bundle_config {
           : ()
         ),
         do_metadata => 1,
+        do_munging => 1,
+        locate_comment => 1,
       }
     ],
     [
@@ -191,7 +196,7 @@ It's equvalent to
     [@Basic]
     
     [AutoPrereqs] ;; Unless no_AutoPrereqs is set
-    [PkgVersion]
+    [OurPkgVersion]
     [MetaJSON]
     
     [MetaNoIndex]
@@ -216,6 +221,8 @@ It's equvalent to
     [Authority]
     authority = cpan:YOURNAME ; if provided
     do_metadata = 1
+    do_munging = 1
+    locate_comment = 1
     
     [NextRelease]
     format = Version %v: %{yyyy-MM-dd}d
