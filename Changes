@@ -1,4 +1,10 @@
 {{$NEXT}}
+  * Use # AUTHORITY and # VERSION comments (OurPkgVersion) so that line
+    numbers are stable.
+  * Add 'compat' option to act like a given version. compat = 0.02 will
+    make VERSION and AUTHORITY act like 0.02.
+  * Add 'no_MakeMaker' option to suppress the dzil MakeMaker plugin so I
+    can use another one.
 
 Version 0.02: 2011-08-18
   * First intentional release, with correct git handling.

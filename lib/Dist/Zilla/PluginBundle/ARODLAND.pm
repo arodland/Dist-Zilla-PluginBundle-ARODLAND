@@ -31,12 +31,15 @@ sub bundle_config {
   my $repository_web = $config->{repository_web};
 
   my $no_a_pre = $config->{no_AutoPrereqs} // 0;
+  my $no_makemaker = $config->{no_MakeMaker} // 0;
   my $nextrelease_format = $config->{nextrelease_format} // "Version %v: %{yyyy-MM-dd}d";
 
   my $nextversion = $config->{nextversion} // "git"; # git, autoversion, manual
   my $tag_message = $config->{git_tag_message};
   my $version_regexp = $config->{git_version_regexp};
   my $autoversion_major = $config->{autoversion_major};
+
+  my $compat = $config->{compat} || $VERSION;
 
   my ($tracker, $tracker_mailto, $webpage, $repo_url, $repo_web);
 
@@ -77,6 +80,10 @@ sub bundle_config {
       payload => { },
   });
 
+  if ($no_makemaker) {
+    @plugins = grep { $_->[1] ne 'Dist::Zilla::Plugin::MakeMaker' } @plugins;
+  }
+
   my $prefix = 'Dist::Zilla::Plugin::';
   push @plugins, map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
   (
@@ -84,8 +91,10 @@ sub bundle_config {
       ? ()
       : ([ AutoPrereqs => { } ])
     ),
-    [ OurPkgVersion => { } ],
-    [ MetaJSON => { } ],
+    ($compat <= 0.02
+      ? ([ PkgVersion => { } ])
+      : ([ OurPkgVersion => { } ])
+    ),
     [
       MetaNoIndex => {
         # Ignore these if they're there
@@ -111,7 +120,10 @@ sub bundle_config {
         ),
         do_metadata => 1,
         do_munging => 1,
-        locate_comment => 1,
+        ($compat <= 0.02
+          ? ()
+          : (locate_comment => 1)
+        ),
       }
     ],
     [
