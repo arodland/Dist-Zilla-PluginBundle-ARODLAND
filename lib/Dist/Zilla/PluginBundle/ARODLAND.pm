@@ -13,7 +13,7 @@ use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::MetaNoIndex;
 use Dist::Zilla::Plugin::AutoVersion;
 use Dist::Zilla::Plugin::Git::NextVersion;
-use Dist::Zilla::Plugin::CheckChangesHasContent;
+#use Dist::Zilla::Plugin::CheckChangesHasContent;
 use Dist::Zilla::Plugin::OurPkgVersion;
 
 sub bundle_config {
@@ -131,7 +131,7 @@ sub bundle_config {
         format => $nextrelease_format,
       }
     ],
-    [ CheckChangesHasContent => { } ],
+#    [ CheckChangesHasContent => { } ],
   );
 
   given ($nextversion) {
