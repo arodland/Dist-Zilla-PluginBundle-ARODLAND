@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+Version 0.03: 2011-11-09
   * Use # AUTHORITY and # VERSION comments (OurPkgVersion) so that line
     numbers are stable.
   * Add 'compat' option to act like a given version. compat = 0.02 will
