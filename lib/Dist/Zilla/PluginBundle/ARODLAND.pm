@@ -4,6 +4,8 @@ package Dist::Zilla::PluginBundle::ARODLAND;
 # VERSION
 
 use 5.10.0;
+no if $] >= 5.017011, warnings => 'experimental::smartmatch';
+
 use Moose;
 with 'Dist::Zilla::Role::PluginBundle';
 
