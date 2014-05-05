@@ -86,6 +86,8 @@ sub bundle_config {
     @plugins = grep { $_->[1] ne 'Dist::Zilla::Plugin::MakeMaker' } @plugins;
   }
 
+  my @no_index_dirs = grep { -d $_ } qw( inc t xt utils example examples );
+
   my $prefix = 'Dist::Zilla::Plugin::';
   push @plugins, map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
   (
@@ -97,12 +99,10 @@ sub bundle_config {
       ? ([ PkgVersion => { } ])
       : ([ OurPkgVersion => { } ])
     ),
-    [
-      MetaNoIndex => {
-        # Ignore these if they're there
-        directory => [ map { -d $_ ? $_ : () } qw( inc t xt utils example examples ) ],
-      }
-    ],
+    (@no_index_dirs
+      ? ([ MetaNoIndex => { directory => [ @no_index_dirs ] } ])
+      : ()
+    ),
     [
       MetaResources => {
         homepage => $webpage,
