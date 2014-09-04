@@ -17,6 +17,8 @@ use Dist::Zilla::Plugin::AutoVersion;
 use Dist::Zilla::Plugin::Git::NextVersion;
 #use Dist::Zilla::Plugin::CheckChangesHasContent;
 use Dist::Zilla::Plugin::OurPkgVersion;
+use Dist::Zilla::Plugin::CopyFilesFromBuild;
+use Dist::Zilla::Plugin::ReadmeFromPod;
 
 sub bundle_config {
   my ($self, $section) = @_;
