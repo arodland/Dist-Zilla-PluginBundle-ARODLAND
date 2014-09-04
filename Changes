@@ -1,6 +1,8 @@
 {{$NEXT}}
+  * Add automatic README generation and copying to the project dir.
 
 Version 0.04: 2014-05-05
+  * Fix a few minor errors and warnings
 
 Version 0.03: 2011-11-09
   * Use # AUTHORITY and # VERSION comments (OurPkgVersion) so that line
