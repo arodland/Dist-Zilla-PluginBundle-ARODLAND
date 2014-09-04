@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+Version 0.06: 2014-09-03
   * Fix dependency declaration.
 
 Version 0.05: 2014-09-03
