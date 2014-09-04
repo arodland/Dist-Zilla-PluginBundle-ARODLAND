@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+Version 0.05: 2014-09-03
   * Add automatic README generation and copying to the project dir.
 
 Version 0.04: 2014-05-05
