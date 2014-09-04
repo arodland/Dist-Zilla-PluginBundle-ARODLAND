@@ -188,9 +188,7 @@ sub bundle_config {
           ? (tag_message => $tag_message)
           : ()
         ),
-        allow_dirty => 'dist.ini',
-        allow_dirty => 'README',
-        allow_dirty => 'Changes',
+        allow_dirty => ['dist.ini', 'README', 'Changes'],
         changelog => 'Changes',
         commit_msg => 'Release v%v%n%n%c',
         push_to => 'origin',
