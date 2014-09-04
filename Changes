@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+Version 0.07: 2014-09-03
+  * Make the smartmatch warning really shut up.
+  * Make README really allow_dirty.
+
 Version 0.06: 2014-09-03
   * Fix dependency declaration.
 

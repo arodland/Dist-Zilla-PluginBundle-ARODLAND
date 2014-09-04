@@ -2,7 +2,7 @@ NAME
     Dist::Zilla::PluginBundle::ARODLAND - Use Dist::Zilla like ARODLAND does
 
 VERSION
-    version 0.06
+    version 0.07
 
 DESCRIPTION
     This is the plugin bundle that ARODLAND uses. Use it as:
