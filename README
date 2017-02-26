@@ -66,6 +66,8 @@ DESCRIPTION
     
         [ModuleBuild::OptionalXS] ;; if install_plugin is 'modulebuild_optionalxs'
     
+        [MetaJSON]
+    
         [@Git]
         allow_dirty = dist.ini
         allow_dirty = README
