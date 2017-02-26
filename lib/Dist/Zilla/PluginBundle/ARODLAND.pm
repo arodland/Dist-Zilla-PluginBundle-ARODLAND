@@ -147,17 +147,19 @@ sub bundle_config {
       }
     ],
     [
-      GatherDir => {
-      }
+      GatherDir => { }
     ],
     ($install_plugin eq 'modulebuild_optionalxs'
-      ? ([ 'ModuleBuild::OptionalXS' => [] ])
+      ? ([ 'ModuleBuild::OptionalXS' => { } ])
       : ()
     ),
     ($install_plugin eq 'mbtiny'
-      ? ([ 'ModuleBuildTiny' => [] ])
+      ? ([ 'ModuleBuildTiny' => { } ])
       : ()
     ),
+    [
+      MetaJSON => { }
+    ],
 #    [ CheckChangesHasContent => { } ],
   );
 
@@ -275,6 +277,8 @@ It's equvalent to
     [MakeMaker] ;; if install_plugin is 'makemaker'
 
     [ModuleBuild::OptionalXS] ;; if install_plugin is 'modulebuild_optionalxs'
+
+    [MetaJSON]
 
     [@Git]
     allow_dirty = dist.ini

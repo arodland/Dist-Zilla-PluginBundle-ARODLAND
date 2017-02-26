@@ -1,4 +1,5 @@
 {{$NEXT}}
+  * Add MetaJSON plugin
 
 Version 0.08: 2017-02-26
   * Add support for different builders, make mbtiny default.
