@@ -147,7 +147,6 @@ sub bundle_config {
     ],
     [
       GatherDir => {
-        exclude_filename => 'README'
       }
     ],
 #    [ CheckChangesHasContent => { } ],
