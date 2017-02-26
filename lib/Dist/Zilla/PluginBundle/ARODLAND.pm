@@ -35,7 +35,8 @@ sub bundle_config {
   my $repository_web = $config->{repository_web};
 
   my $no_a_pre = $config->{no_AutoPrereqs} // 0;
-  my $no_makemaker = $config->{no_MakeMaker} // 0;
+  my $install_plugin = $config->{install_plugin} // "mbtiny";
+  $install_plugin = lc $install_plugin;
   my $nextrelease_format = $config->{nextrelease_format} // "Version %v: %{yyyy-MM-dd}d";
 
   my $nextversion = $config->{nextversion} // "git"; # git, autoversion, manual
@@ -84,7 +85,7 @@ sub bundle_config {
       payload => { },
   });
 
-  if ($no_makemaker) {
+  if ($install_plugin ne 'makemaker') {
     @plugins = grep { $_->[1] ne 'Dist::Zilla::Plugin::MakeMaker' } @plugins;
   }
 
@@ -149,6 +150,14 @@ sub bundle_config {
       GatherDir => {
       }
     ],
+    ($install_plugin eq 'modulebuild_optionalxs'
+      ? ([ 'ModuleBuild::OptionalXS' => [] ])
+      : ()
+    ),
+    ($install_plugin eq 'mbtiny'
+      ? ([ 'ModuleBuildTiny' => [] ])
+      : ()
+    ),
 #    [ CheckChangesHasContent => { } ],
   );
 
@@ -260,6 +269,12 @@ It's equvalent to
     [Git::NextVersion] ;; if nextversion is set to 'git'
     
     [AutoVersion] ;; if nextversion is set to 'autoversion'
+
+    [ModuleBuildTiny] ;; by default
+
+    [MakeMaker] ;; if install_plugin is 'makemaker'
+
+    [ModuleBuild::OptionalXS] ;; if install_plugin is 'modulebuild_optionalxs'
 
     [@Git]
     allow_dirty = dist.ini
