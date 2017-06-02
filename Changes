@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+Version 0.10: 2017-06-02
   * Add prereqs = cpanfile to support getting prereqs from cpanfile.
   * no_autoprereq = 1 should now be spelled "prereqs = manual".
   * AutoPrereq is still the default but can be specified as "prereqs = auto".
