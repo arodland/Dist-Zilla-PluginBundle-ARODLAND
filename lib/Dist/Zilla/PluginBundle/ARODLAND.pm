@@ -19,6 +19,7 @@ use Dist::Zilla::Plugin::Git::NextVersion;
 use Dist::Zilla::Plugin::OurPkgVersion;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::ReadmeFromPod;
+use Dist::Zilla::Plugin::Prereqs::FromCPANfile;
 
 sub bundle_config {
   my ($self, $section) = @_;
@@ -34,7 +35,9 @@ sub bundle_config {
   my $repository_url = $config->{repository_url};
   my $repository_web = $config->{repository_web};
 
-  my $no_a_pre = $config->{no_AutoPrereqs} // 0;
+  my $prereqs = $config->{prereqs} // 'auto';
+  $prereqs = 'manual' if $config->{no_AutoPrereqs};
+
   my $install_plugin = $config->{install_plugin} // "mbtiny";
   $install_plugin = lc $install_plugin;
   my $nextrelease_format = $config->{nextrelease_format} // "Version %v: %{yyyy-MM-dd}d";
@@ -96,9 +99,13 @@ sub bundle_config {
   my $prefix = 'Dist::Zilla::Plugin::';
   push @plugins, map {[ "$section->{name}/$_->[0]" => "$prefix$_->[0]" => $_->[1] ]}
   (
-    ($no_a_pre
-      ? ()
-      : ([ AutoPrereqs => { } ])
+    ($prereqs eq 'cpanfile'
+      ? ([ 'Prereqs::FromCPANfile' => { } ])
+      : ()
+    ),
+    ($prereqs eq 'auto'
+      ? ([ 'AutoPrereqs' => { } ])
+      : ()
     ),
     ($compat <= 0.02
       ? ([ PkgVersion => { } ])
@@ -143,7 +150,18 @@ sub bundle_config {
     ],
     [
       CopyFilesFromBuild => {
-        copy => 'README',
+        copy => [
+          'README',
+          ($install_plugin eq 'modulebuild_optionalxs' or $install_plugin eq 'mbtiny'
+            ? ('Build.PL')
+            : ()
+          ),
+          ($install_plugin eq 'makemaker'
+            ? ('Makefile.PL')
+            : ()
+          ),
+          'META.json',
+        ],
       }
     ],
     [
