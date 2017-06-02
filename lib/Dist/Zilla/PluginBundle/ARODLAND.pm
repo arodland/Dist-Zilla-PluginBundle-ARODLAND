@@ -146,6 +146,16 @@ sub bundle_config {
       }
     ],
     [
+      GatherDir => {
+        exclude_filename => [
+          'README',
+          'Makefile.PL',
+          'Build.PL',
+          'META.json'
+        ],
+      }
+    ],
+    [
       ReadmeFromPod => { }
     ],
     [
@@ -163,9 +173,6 @@ sub bundle_config {
           'META.json',
         ],
       }
-    ],
-    [
-      GatherDir => { }
     ],
     ($install_plugin eq 'modulebuild_optionalxs'
       ? ([ 'ModuleBuild::OptionalXS' => { } ])
