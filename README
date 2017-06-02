@@ -1,3 +1,12 @@
+NAME
+
+    Dist::Zilla::PluginBundle::ARODLAND - Use Dist::Zilla like ARODLAND
+    does
+
+VERSION
+
+    version 0.11
+
 DESCRIPTION
 
     This is the plugin bundle that ARODLAND uses. Use it as:
@@ -75,4 +84,15 @@ DESCRIPTION
         changelog = Changes
         commit_msg = Release v%v%n%n%c
         push_to = origin
+
+AUTHOR
+
+    Andrew Rodland <arodland@cpan.org>
+
+COPYRIGHT AND LICENSE
+
+    This software is copyright (c) 2017 by Andrew Rodland.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
 

@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+Version 0.11: 2017-06-02
   * Replace ReadmeFromPod with ReadmeAnyFromPod to really fix README issues
 
 Version 0.10: 2017-06-02
