@@ -18,7 +18,7 @@ use Dist::Zilla::Plugin::Git::NextVersion;
 #use Dist::Zilla::Plugin::CheckChangesHasContent;
 use Dist::Zilla::Plugin::OurPkgVersion;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
-use Dist::Zilla::Plugin::ReadmeFromPod;
+use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::Prereqs::FromCPANfile;
 
 sub bundle_config {
@@ -156,12 +156,15 @@ sub bundle_config {
       }
     ],
     [
-      ReadmeFromPod => { }
+      ReadmeAnyFromPod => { 
+        type => 'text',
+        filename => 'README',
+        location => 'root',
+      }
     ],
     [
       CopyFilesFromBuild => {
         copy => [
-          'README',
           ($install_plugin eq 'modulebuild_optionalxs' or $install_plugin eq 'mbtiny'
             ? ('Build.PL')
             : ()
