@@ -1,4 +1,5 @@
 {{$NEXT}}
+  * Allow generating README.pod instead of README.
 
 Version 0.11: 2017-06-02
   * Replace ReadmeFromPod with ReadmeAnyFromPod to really fix README issues

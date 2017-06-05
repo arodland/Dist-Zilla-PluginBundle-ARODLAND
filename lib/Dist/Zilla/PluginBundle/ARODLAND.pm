@@ -47,6 +47,8 @@ sub bundle_config {
   my $version_regexp = $config->{git_version_regexp};
   my $autoversion_major = $config->{autoversion_major};
 
+  my $readme_format = $config->{readme_format} // "pod";
+
   my $compat = $config->{compat} || $VERSION;
 
   my ($tracker, $tracker_mailto, $webpage, $repo_url, $repo_web);
@@ -140,6 +142,7 @@ sub bundle_config {
       GatherDir => {
         exclude_filename => [
           'README',
+          'README.pod',
           'Makefile.PL',
           'Build.PL',
           'META.json'
@@ -147,10 +150,16 @@ sub bundle_config {
       }
     ],
     [
-      ReadmeAnyFromPod => { 
-        type => 'text',
-        filename => 'README',
+      ReadmeAnyFromPod => {
         location => 'root',
+        ($readme_format eq 'pod'
+          ? (type => 'pod', filename => 'README.pod')
+          : ()
+        ),
+        ($readme_format eq 'text'
+          ? (type => 'text', filename => 'README')
+          : ()
+        ),
       }
     ],
     [
@@ -215,7 +224,7 @@ sub bundle_config {
           ? (tag_message => $tag_message)
           : ()
         ),
-        allow_dirty => ['dist.ini', 'README', 'Changes'],
+        allow_dirty => ['dist.ini', 'README', 'README.pod', 'Changes'],
         changelog => 'Changes',
         commit_msg => 'Release v%v%n%n%c',
         push_to => 'origin',
