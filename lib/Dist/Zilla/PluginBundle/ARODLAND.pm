@@ -51,36 +51,27 @@ sub bundle_config {
 
   my ($tracker, $tracker_mailto, $webpage, $repo_url, $repo_web);
 
-  given ($bugtracker) {
-    when ('github') {
-      $tracker = "http://github.com/$github_user/$dist/issues";
-    }
-    when ('rt') {
-      $tracker = "https://rt.cpan.org/Public/Dist/Display.html?Name=$dist";
-      $tracker_mailto = "bug-${dist}\@rt.cpan.org";
-    }
-    default {
-      $tracker = $bugtracker;
-    }
+  if ($bugtracker eq 'github') {
+    $tracker = "http://github.com/$github_user/$dist/issues";
+  } elsif ($bugtracker eq 'rt') {
+    $tracker = "https://rt.cpan.org/Public/Dist/Display.html?Name=$dist";
+    $tracker_mailto = "bug-${dist}\@rt.cpan.org";
+  } else {
+    $tracker = $bugtracker;
   }
 
-  given ($repository_url) {
-    when (not defined) {
-      $repo_web = "http://github.com/$github_user/$dist";
-      $repo_url = "git://github.com/$github_user/$dist.git";
-    }
-    default {
-      $repo_web = $repository_web;
-      $repo_url = $repository_url;
-    }
+  if (defined $repository_url) {
+    $repo_web = $repository_web;
+    $repo_url = $repository_url;
+  } else {
+    $repo_web = "http://github.com/$github_user/$dist";
+    $repo_url = "git://github.com/$github_user/$dist.git";
   }
 
-  given ($homepage) {
-    when (not defined) {
-      $webpage = "http://metacpan.org/release/$dist";
-    } default {
-      $webpage = $homepage;
-    }
+  if (defined $homepage) {
+    $webpage = $homepage;
+  } else {
+    $webpage = "http://metacpan.org/release/$dist";
   }
 
   my @plugins = Dist::Zilla::PluginBundle::Basic->bundle_config({
@@ -191,32 +182,30 @@ sub bundle_config {
 #    [ CheckChangesHasContent => { } ],
   );
 
-  given ($nextversion) {
-    when ('git') {
-      push @plugins, [ "$section->{name}/Git::NextVersion", "Dist::Zilla::Plugin::Git::NextVersion",
-        {
-          first_version => '0.01',
-          ( $version_regexp
-            ? (version_regexp => $version_regexp)
-            : (version_regexp => '^(\d.*)$')
-          ),
-        }
-      ];
-    } when ('autoversion') {
-      push @plugins, [ "$section->{name}/AutoVersion", "Dist::Zilla::Plugin::AutoVersion",
-        { 
-          ( $autoversion_major
-            ? (major => $autoversion_major)
-            : (major => 0)
-          ),
-        }
-      ];
-    } when ('manual') {
-      # Manual versioning
-    } default {
-      die "Unknown 'nextversion'\n";
-    }
-  };
+  if ($nextversion eq 'git') {
+    push @plugins, [ "$section->{name}/Git::NextVersion", "Dist::Zilla::Plugin::Git::NextVersion",
+      {
+        first_version => '0.01',
+        ( $version_regexp
+          ? (version_regexp => $version_regexp)
+          : (version_regexp => '^(\d.*)$')
+        ),
+      }
+    ];
+  } elsif ($nextversion eq 'autoversion') {
+    push @plugins, [ "$section->{name}/AutoVersion", "Dist::Zilla::Plugin::AutoVersion",
+      {
+        ( $autoversion_major
+          ? (major => $autoversion_major)
+          : (major => 0)
+        ),
+      }
+    ];
+  } elsif ($nextversion eq 'manual') {
+    # Manual versioning
+  } else {
+    die "Unknown 'nextversion'\n";
+  }
 
   push @plugins, Dist::Zilla::PluginBundle::Git->bundle_config({
       name    => "$section->{name}/\@Git",
