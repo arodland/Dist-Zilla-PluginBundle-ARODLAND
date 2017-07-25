@@ -8,7 +8,7 @@ Dist::Zilla::PluginBundle::ARODLAND - Use L<Dist::Zilla> like ARODLAND does
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 
