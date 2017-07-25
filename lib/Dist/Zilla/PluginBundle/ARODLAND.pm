@@ -165,7 +165,7 @@ sub bundle_config {
     [
       CopyFilesFromBuild => {
         copy => [
-          ($install_plugin eq 'modulebuild_optionalxs' or $install_plugin eq 'mbtiny'
+          (($install_plugin eq 'modulebuild_optionalxs' or $install_plugin eq 'mbtiny')
             ? ('Build.PL')
             : ()
           ),
