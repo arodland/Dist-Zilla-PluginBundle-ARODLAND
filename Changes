@@ -1,4 +1,5 @@
 {{$NEXT}}
+  * Auto-commit META and README
 
 Version 0.13: 2017-07-25
   * Fix building with ModuleBuild::OptionalXS.
