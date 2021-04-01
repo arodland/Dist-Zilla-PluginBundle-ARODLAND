@@ -224,7 +224,7 @@ sub bundle_config {
           ? (tag_message => $tag_message)
           : ()
         ),
-        allow_dirty => ['dist.ini', 'README', 'README.pod', 'META.json', 'Changes'],
+        allow_dirty => ['dist.ini', 'README', 'README.pod', 'META.json', 'Changes', 'Build.PL', 'Makefile.PL'],
         changelog => 'Changes',
         add_files_in => ['README', 'README.pod', 'META.json'],
         commit_msg => 'Release v%v%n%n%c',
